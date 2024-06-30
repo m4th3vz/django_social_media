@@ -13,8 +13,9 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     # Página de logout
     path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
-    # Perfil do usuário e edição
+    # Perfil do usuário
     path('profile/', views.profile_view, name='profile'),
+    # Perfil de edição
     path('profile/edit/', views.profile_edit_view, name='profile_edit'),
     # Perfil de outro usuário
     path('profile/<str:username>/', views.other_profile_view, name='other_profile'),

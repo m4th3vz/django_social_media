@@ -1,3 +1,4 @@
+<!-- templates/index.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -17,15 +18,23 @@
             <div class="navbar-brand">
                 <a href="{% url 'index' %}" style="text-decoration: none; color: white;">Projeto Django</a>
             </div>
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-light">Logout</button>
-                  </form>
-            </ul>
-          </div>
-        </div>
+            <div class="justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <div class="d-flex justify-content-center me-2">
+                        <a href="{% url 'profile' %}" class="btn btn-light">Perfil</a>
+                    </div>
+                    <div class="d-flex justify-content-center me-2">
+                        <a href="{% url 'register' %}" class="btn btn-light">Registrar</a>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-light">Logout</button>
+                        </form>
+                    </div>
+                </ul>
+            </div>
+            
     </nav>
 
     <div class="text-center">
@@ -35,21 +44,6 @@
 {% else %}
     <span>Você não está logado</span>
 {% endif %}
-    </div>
-
-    <div class="container center-screen">
-        <div class="row">
-            <div class="col-12 text-center">
-                <div class="d-flex flex-column">
-                    <div class="d-flex justify-content-center mb-2">
-                        <a href="{% url 'profile' %}" class="btn btn-success m-1 btn-custom">Entrar</a>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <a href="{% url 'register' %}" class="btn btn-success m-1 btn-custom">Registrar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->

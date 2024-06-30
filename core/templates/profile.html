@@ -1,3 +1,4 @@
+<!-- templates/profile.html -->
 {% extends 'base.html' %}
 
 {% block content %}
@@ -13,48 +14,54 @@
     <a href="{% url 'profile_edit' %}">Editar Perfil</a>
   {% endif %}
 
-  <!-- Comment form -->
-  <div class="card mt-4" style="margin-bottom:3%">
-    <div class="card-body">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-success m-1 btn-custom-2">Adicionar Comentário</button>
-        </form>
+  {% if profile.user == request.user %}
+    <div class="card mt-4" style="margin-bottom:3%">
+      <div class="card-body">
+          <form method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit" class="btn btn-success m-1 btn-custom-2">Adicionar Comentário</button>
+          </form>
+      </div>
     </div>
-  </div>
+  {% endif %}
 
   <!-- Display comments -->
   <div class="comments">
-      {% for comment in comments %}
-          <div class="card mb-2">
-              <div class="card-body">
-                  <h5 class="card-title">{{ comment.user.username }}</h5>
-                  <p class="card-text">{{ comment.content }}</p>
-                  <p class="text-muted">
-                      {{ comment.created_at }}
-                      {% if comment.edited_at %}
-                          (editado)
+      {% if comments %}
+          {% for comment in comments %}
+              <div class="card mb-2">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ comment.user.username }}</h5>
+                      <p class="card-text">{{ comment.content }}</p>
+                      <p class="text-muted">
+                          {{ comment.created_at }}
+                          {% if comment.edited_at %}
+                              (editado)
+                          {% endif %}
+                      </p>
+                      {% if comment.user == request.user %}
+                          <button class="btn btn-primary btn-sm" onclick="editComment({{ comment.id }})">Editar</button>
+                          <form method="post" action="{% url 'delete_comment' comment.id %}" style="display: inline;">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                          </form>
+
+                          <!-- Formulário oculto para edição -->
+                          <form id="edit-form-{{ comment.id }}" method="post" action="{% url 'edit_comment' comment.id %}" style="display: none;">
+                              {% csrf_token %}
+                              <div class="form-group">
+                                  <textarea class="form-control" name="content" rows="3">{{ comment.content }}</textarea>
+                              </div>
+                              <button type="submit" class="btn btn-success btn-sm mt-2">Salvar</button>
+                              <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="cancelEdit({{ comment.id }})">Cancelar</button>
+                          </form>
                       {% endif %}
-                  </p>
-                  {% if comment.user == request.user %}
-                      <button class="btn btn-primary btn-sm" onclick="editComment({{ comment.id }})">Editar</button>
-                      <form method="post" action="{% url 'delete_comment' comment.id %}" style="display: inline;">
-                          {% csrf_token %}
-                          <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                      </form>
-                      <!-- Hidden form for editing -->
-                      <form id="edit-form-{{ comment.id }}" method="post" action="{% url 'edit_comment' comment.id %}" style="display: none;">
-                          {% csrf_token %}
-                          <div class="form-group">
-                              <textarea class="form-control" name="content" rows="3">{{ comment.content }}</textarea>
-                          </div>
-                          <button type="submit" class="btn btn-success btn-sm mt-2">Salvar</button>
-                          <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="cancelEdit({{ comment.id }})">Cancelar</button>
-                      </form>
-                  {% endif %}
+                  </div>
               </div>
-          </div>
-      {% endfor %}
+          {% endfor %}
+      {% else %}
+          <p>Nenhum comentário disponível.</p>
+      {% endif %}
   </div>
 {% endblock %}

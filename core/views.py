@@ -18,7 +18,6 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            # Cria um perfil vazio para o novo usuário
             Profile.objects.create(user=user)
             return redirect('index')
     else:
@@ -56,7 +55,8 @@ def profile_view(request):
     else:
         form = CommentForm()
     
-    comments = Comment.objects.all().order_by('-created_at')
+    # Obtém apenas os comentários do usuário logado
+    comments = Comment.objects.filter(user=request.user).order_by('-created_at')
     
     return render(request, 'profile.html', {'profile': profile, 'form': form, 'comments': comments})
 
@@ -78,7 +78,11 @@ def profile_edit_view(request):
 def other_profile_view(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
-    return render(request, 'profile.html', {'profile': profile})
+    
+    # Obtém os comentários do usuário visitado
+    comments = Comment.objects.filter(user=user).order_by('-created_at')
+    
+    return render(request, 'profile.html', {'profile': profile, 'comments': comments})
 
 # Excluir comentário
 @login_required
@@ -102,8 +106,7 @@ def edit_comment(request, comment_id):
     else:
         form = CommentForm(instance=comment)
     
-    comments = Comment.objects.all().order_by('-created_at')
+    comments = Comment.objects.filter(user=request.user).order_by('-created_at')
     profile = Profile.objects.get(user=request.user)
     
     return render(request, 'profile.html', {'form': form, 'comments': comments, 'profile': profile})
-
