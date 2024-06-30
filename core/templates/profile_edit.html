@@ -1,0 +1,11 @@
+<!-- templates/profile_edit.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Editar Perfil</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar</button>
+  </form>
+{% endblock %}

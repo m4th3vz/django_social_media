@@ -1,0 +1,30 @@
+/* Cabeçalho do site */
+.navbar-custom {
+    background-color: #092E20; /* Cor personalizada */
+}
+
+.navbar-custom .navbar-brand {
+    color: white;
+    text-align: center; /* Alinha o texto centralmente */
+    width: 100%; /* Ocupa toda a largura disponível */
+}
+
+/* Botões */
+.center-screen {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-custom {
+    width: 100px;
+    height: 40px;
+    background-color: #092E20; /* Cor personalizada */
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda padrão */
+}
+
+.btn-custom:hover {
+    background-color: #074B35; /* Cor ao passar o mouse */
+}
