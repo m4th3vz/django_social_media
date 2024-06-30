@@ -2,7 +2,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Definindo um formulário personalizado para o perfil
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100, blank=True)
@@ -16,7 +15,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-# Definindo um formulário personalizado para comentários
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
@@ -25,3 +23,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content[:20]
+
+class Follow(models.Model):
+    follower = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
+    followed = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('follower', 'followed')
+
+    def __str__(self):
+        return f"{self.follower} follows {self.followed}"

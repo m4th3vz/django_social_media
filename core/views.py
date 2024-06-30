@@ -4,14 +4,19 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, ProfileForm, CommentForm
-from .models import Profile, Comment
+from .models import Profile, Comment, Follow
 from django.utils import timezone
 
-# Página principal
 def index(request):
-    return render(request, 'index.html')
+    if request.user.is_authenticated:
+        following = Follow.objects.filter(follower=request.user)
+        followed_users = [follow.followed for follow in following]
+        comments = Comment.objects.filter(user__in=followed_users).order_by('-created_at')
+    else:
+        comments = Comment.objects.none()
+    
+    return render(request, 'index.html', {'comments': comments})
 
-# Página de registro
 def register_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -24,7 +29,6 @@ def register_view(request):
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
-# Página de login
 def login_view(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
@@ -39,12 +43,10 @@ def login_view(request):
         form = CustomAuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
-# Exibir perfil
 @login_required
 def profile_view(request):
     profile = Profile.objects.get(user=request.user)
     
-    # Lógica para lidar com comentários
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -55,12 +57,10 @@ def profile_view(request):
     else:
         form = CommentForm()
     
-    # Obtém apenas os comentários do usuário logado
     comments = Comment.objects.filter(user=request.user).order_by('-created_at')
     
     return render(request, 'profile.html', {'profile': profile, 'form': form, 'comments': comments})
 
-# Editar perfil
 @login_required
 def profile_edit_view(request):
     profile = Profile.objects.get(user=request.user)
@@ -73,26 +73,37 @@ def profile_edit_view(request):
         form = ProfileForm(instance=profile)
     return render(request, 'profile_edit.html', {'form': form})
 
-# Perfil de outros usuários
 @login_required
 def other_profile_view(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
-    
-    # Obtém os comentários do usuário visitado
     comments = Comment.objects.filter(user=user).order_by('-created_at')
     
-    return render(request, 'profile.html', {'profile': profile, 'comments': comments})
+    is_following = Follow.objects.filter(follower=request.user, followed=user).exists()
+    
+    return render(request, 'other_profile.html', {'profile': profile, 'comments': comments, 'is_following': is_following})
 
-# Excluir comentário
+@login_required
+def follow_user(request, username):
+    user_to_follow = get_object_or_404(User, username=username)
+    if user_to_follow != request.user:
+        Follow.objects.get_or_create(follower=request.user, followed=user_to_follow)
+    return redirect('other_profile', username=username)
+
+@login_required
+def unfollow_user(request, username):
+    user_to_unfollow = get_object_or_404(User, username=username)
+    Follow.objects.filter(follower=request.user, followed=user_to_unfollow).delete()
+    return redirect('other_profile', username=username)
+
 @login_required
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, user=request.user)
     if request.method == 'POST':
         comment.delete()
         return redirect('profile')
+    return redirect('profile')
 
-# Editar comentário
 @login_required
 def edit_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, user=request.user)

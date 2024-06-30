@@ -1,0 +1,38 @@
+<!-- templates/other_profile.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Perfil de {{ profile.user.username }}</h2>
+  <p><strong>Nome Completo:</strong> {{ profile.full_name }}</p>
+  <p><strong>Data de Aniversário:</strong> {{ profile.birth_date }}</p>
+  <p><strong>Localização:</strong> {{ profile.location }}</p>
+  <p><strong>Bio:</strong> {{ profile.bio }}</p>
+  <p><strong>Email:</strong> {{ profile.email }}</p>
+  <p><strong>Número de Telefone:</strong> {{ profile.phone_number }}</p>
+  <p><strong>Formação Acadêmica:</strong> {{ profile.education }}</p>
+
+  {% if profile.user != request.user %}
+    {% if is_following %}
+        <a href="{% url 'unfollow_user' profile.user.username %}" class="btn btn-danger">Deixar de Seguir</a>
+    {% else %}
+        <a href="{% url 'follow_user' profile.user.username %}" class="btn btn-primary">Seguir</a>
+    {% endif %}
+  {% endif %}
+
+  <div class="comments">
+    <h3>Comentários</h3>
+    {% if comments %}
+        {% for comment in comments %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">{{ comment.user.username }}</h5>
+                    <p class="card-text">{{ comment.content }}</p>
+                    <p class="text-muted">{{ comment.created_at }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nenhum comentário disponível.</p>
+    {% endif %}
+  </div>
+{% endblock %}
