@@ -121,3 +121,9 @@ def edit_comment(request, comment_id):
     profile = Profile.objects.get(user=request.user)
     
     return render(request, 'profile.html', {'form': form, 'comments': comments, 'profile': profile})
+
+@login_required
+def following_list_view(request):
+    following = Follow.objects.filter(follower=request.user)
+    followed_users = [follow.followed for follow in following]
+    return render(request, 'followingList.html', {'followed_users': followed_users})

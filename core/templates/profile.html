@@ -18,6 +18,8 @@
     <a href="{% url 'profile_edit' %}">Editar Perfil</a>
   {% endif %}
 
+  <a href="{% url 'following_list' %}">Usuários que você segue</a>
+
   {% if profile.user == request.user %}
     <div class="card mt-4" style="margin-bottom:3%">
       <div class="card-body">

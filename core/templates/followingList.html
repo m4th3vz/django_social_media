@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+Usuários que você segue
+{% endblock page_title%}
+
+{% block content %}
+  <h2>Usuários que você segue</h2>
+  <ul>
+    {% for user in followed_users %}
+      <li>
+        <a href="{% url 'other_profile' user.username %}">{{ user.username }}</a>
+        <form action="{% url 'unfollow_user' user.username %}" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger btn-sm">Deixar de seguir</button>
+        </form>
+      </li>
+    {% empty %}
+      <p>Você ainda não segue ninguem.</p>
+    {% endfor %}
+  </ul>
+{% endblock %}
