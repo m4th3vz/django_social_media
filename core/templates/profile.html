@@ -1,6 +1,10 @@
 <!-- templates/profile.html -->
 {% extends 'base.html' %}
 
+{% block page_title %}
+    Meu perfil
+{% endblock page_title%}
+
 {% block content %}
   <h2>Perfil de {{ profile.user.username }}</h2>
   <p><strong>Nome Completo:</strong> {{ profile.full_name }}</p>
@@ -64,4 +68,4 @@
           <p>Nenhum comentário disponível.</p>
       {% endif %}
   </div>
-{% endblock %}
+{% endblock content %}

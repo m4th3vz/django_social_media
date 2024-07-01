@@ -1,6 +1,10 @@
 <!-- templates/profile_edit.html -->
 {% extends 'base.html' %}
 
+{% block page_title %}
+    Editar perfil
+{% endblock page_title%}
+
 {% block content %}
   <h2>Editar Perfil</h2>
   <form method="post">
@@ -8,4 +12,4 @@
     {{ form.as_p }}
     <button type="submit">Salvar</button>
   </form>
-{% endblock %}
+{% endblock content %}

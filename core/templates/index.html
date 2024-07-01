@@ -1,6 +1,10 @@
 <!-- templates/index.html -->
 {% extends 'base.html' %}
 
+{% block page_title %}
+    Página inicial
+{% endblock page_title%}
+
 {% block content %}
     <h1>Bem-vindo à Página Inicial</h1>
     {% if user.is_authenticated %}
@@ -10,7 +14,9 @@
             {% for comment in comments %}
                 <div class="card mb-2">
                     <div class="card-body">
-                        <h5 class="card-title">{{ comment.user.username }}</h5>
+                        <h5 class="card-title">
+                            <a href="{% url 'other_profile' comment.user.username %}">{{ comment.user.username }}</a>
+                        </h5>
                         <p class="card-text">{{ comment.content }}</p>
                         <p class="text-muted">{{ comment.created_at }}</p>
                     </div>
@@ -22,4 +28,4 @@
     {% else %}
         <p>Você não está logado.</p>
     {% endif %}
-{% endblock %}
+{% endblock content %}

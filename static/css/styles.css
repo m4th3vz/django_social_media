@@ -28,3 +28,8 @@
 .btn-custom:hover {
     background-color: #074B35; /* Cor ao passar o mouse */
 }
+
+/* Estilo para links dentro de .card-title */
+.card-title a {
+    text-decoration: none; /* Remove o sublinhado */
+}
