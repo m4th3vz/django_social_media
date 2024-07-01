@@ -16,4 +16,5 @@ urlpatterns = [
     path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     path('edit_comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
     path('following/', views.following_list_view, name='following_list'),
+    path('followers/', views.followed_list_view, name='followed_list'),
 ]

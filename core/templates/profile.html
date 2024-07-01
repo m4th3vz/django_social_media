@@ -19,6 +19,7 @@
   {% endif %}
 
   <a href="{% url 'following_list' %}">Usuários que você segue</a>
+  <a href="{% url 'followed_list' %}">Usuários que te seguem</a>
 
   {% if profile.user == request.user %}
     <div class="card mt-4" style="margin-bottom:3%">
