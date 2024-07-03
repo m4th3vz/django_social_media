@@ -6,10 +6,38 @@
 {% endblock page_title%}
 
 {% block content %}
-  <h2>Editar Perfil</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Salvar</button>
-  </form>
+<div class="container mt-5">
+    <h2>Editar Perfil</h2>
+    <form method="post" action="{% url 'profile_edit' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="full_name" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ form.full_name.value }}">
+        </div>
+        <div class="mb-3">
+            <label for="birth_date" class="form-label">Data de Aniversário</label>
+            <input type="date" class="form-control" id="birth_date" name="birth_date" value="{{ form.birth_date.value }}">
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Localização</label>
+            <input type="text" class="form-control" id="location" name="location" value="{{ form.location.value }}">
+        </div>
+        <div class="mb-3">
+            <label for="bio" class="form-label">Bio</label>
+            <textarea class="form-control" id="bio" name="bio" rows="3">{{ form.bio.value }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ form.email.value }}">
+        </div>
+        <div class="mb-3">
+            <label for="phone_number" class="form-label">Telefone</label>
+            <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ form.phone_number.value }}">
+        </div>
+        <div class="mb-3">
+            <label for="education" class="form-label">Formação Acadêmica</label>
+            <input type="text" class="form-control" id="education" name="education" value="{{ form.education.value }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% url 'profile' %}" class="btn btn-secondary">Cancelar</a>        
 {% endblock content %}

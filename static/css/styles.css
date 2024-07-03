@@ -33,3 +33,13 @@
 .card-title a {
     text-decoration: none; /* Remove o sublinhado */
 }
+
+.btn-custom-2 {
+    background-color: #092E20; /* Cor personalizada */
+    color: white; /* Cor do texto */
+    border: none; /* Remove a borda padrão */
+}
+
+.btn-custom-2:hover {
+    background-color: #074B35; /* Cor ao passar o mouse */
+}

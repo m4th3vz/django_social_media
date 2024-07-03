@@ -7,15 +7,15 @@
 
 {% block content %}
   <h2>Perfil de {{ profile.user.username }}</h2>
-  <p><strong>Nome Completo:</strong> {{ profile.full_name }}</p>
+  <p><strong>Nome:</strong> {{ profile.full_name }}</p>
   <p><strong>Data de Aniversário:</strong> {{ profile.birth_date }}</p>
   <p><strong>Localização:</strong> {{ profile.location }}</p>
   <p><strong>Bio:</strong> {{ profile.bio }}</p>
   <p><strong>Email:</strong> {{ profile.email }}</p>
-  <p><strong>Número de Telefone:</strong> {{ profile.phone_number }}</p>
+  <p><strong>Telefone:</strong> {{ profile.phone_number }}</p>
   <p><strong>Formação Acadêmica:</strong> {{ profile.education }}</p>
   {% if profile.user == request.user %}
-    <a href="{% url 'profile_edit' %}">Editar Perfil</a>
+    <a href="{% url 'profile_edit' %}" class="btn btn-success m-1 btn-custom-2">Editar Perfil</a>
   {% endif %}
 
   <a href="{% url 'following_list' %}">Usuários que você segue</a>
